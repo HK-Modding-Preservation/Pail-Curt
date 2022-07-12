@@ -83,7 +83,7 @@ namespace ZaliantsSurprise
             vp.isLooping = true;
             vp.targetCamera = GameCameras.instance.mainCamera;
             vp.source = VideoSource.VideoClip;
-            vp.clip = _abTitleScreenRick.LoadAsset<VideoClip>("ra - nggyu");
+            vp.clip = _abTitleScreenRick.LoadAsset<VideoClip>("RickRoll");
             UObject.DontDestroyOnLoad(vp.clip);
 
             var cameraCurves = new MenuStyles.MenuStyle.CameraCurves();

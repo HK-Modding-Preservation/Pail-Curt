@@ -11,6 +11,7 @@ using USceneManager = UnityEngine.SceneManagement.SceneManager;
 using UnityEngine.Video;
 using LanguageStrings = ZaliantsSurprise.Consts.LanguageStrings;
 using System.Linq;
+using SFCore.Utils;
 
 namespace ZaliantsSurprise
 {
@@ -76,14 +77,40 @@ namespace ZaliantsSurprise
 
             #endregion
 
+            var aSource = pcStyleGo.AddComponent<AudioSource>();
+            aSource.clip = null;
+            aSource.outputAudioMixerGroup = self.styles[0].styleObject.Find("Audio Player Actor 2D (1)")
+                .GetComponent<AudioSource>().outputAudioMixerGroup;
+            aSource.mute = false;
+            aSource.bypassEffects = false;
+            aSource.bypassListenerEffects = false;
+            aSource.bypassReverbZones = false;
+            aSource.playOnAwake = true;
+            aSource.loop = true;
+            aSource.priority = 128;
+            aSource.volume = 1;
+            aSource.pitch = 1;
+            aSource.panStereo = 0;
+            aSource.spatialBlend = 0;
+            aSource.reverbZoneMix = 1;
+            aSource.dopplerLevel = 0;
+            aSource.spread = 0;
+            aSource.rolloffMode = AudioRolloffMode.Custom;
+            aSource.maxDistance = 58.79711f;
+            aSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, new AnimationCurve(new []
+            {
+                new Keyframe(45.86174f, 1),
+                new Keyframe(55.33846f, 0)
+            }));
             var vp = pcStyleGo.AddComponent<VideoPlayer>();
             //vp.playOnAwake = false;
-            vp.audioOutputMode = VideoAudioOutputMode.Direct;
+            vp.audioOutputMode = VideoAudioOutputMode.AudioSource;
             vp.renderMode = VideoRenderMode.CameraFarPlane;
             vp.isLooping = true;
             vp.targetCamera = GameCameras.instance.mainCamera;
             vp.source = VideoSource.VideoClip;
             vp.clip = _abTitleScreenRick.LoadAsset<VideoClip>("RickRoll");
+            vp.SetTargetAudioSource(0, aSource);
             UObject.DontDestroyOnLoad(vp.clip);
 
             var cameraCurves = new MenuStyles.MenuStyle.CameraCurves();

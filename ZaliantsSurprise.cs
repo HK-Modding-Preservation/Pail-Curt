@@ -22,7 +22,7 @@ namespace ZaliantsSurprise
         public LanguageStrings LangStrings { get; private set; }
 
         private AssetBundle _abTitleScreenRick = null;
-        
+
         public override string GetVersion() => SFCore.Utils.Util.GetVersion(Assembly.GetExecutingAssembly());
 
         public override List<ValueTuple<string, string>> GetPreloadNames()
@@ -32,14 +32,14 @@ namespace ZaliantsSurprise
                 ("Room_shop", "_SceneManager")
             };
         }
-        
+
         public ZaliantsSurprise() : base("Zaliants Surprise")
         {
             LangStrings = new LanguageStrings();
 
             MenuStyleHelper.AddMenuStyleHook += AddMenuStyleRick;
         }
-        
+
         public override void Initialize()
         {
             Log("Initializing");
@@ -52,7 +52,7 @@ namespace ZaliantsSurprise
 
             Log("Initialized");
         }
-        
+
         private (string languageString, GameObject styleGo, int titleIndex, string unlockKey, string[] achievementKeys, MenuStyles.MenuStyle.CameraCurves cameraCurves, AudioMixerSnapshot musicSnapshot) AddMenuStyleRick(MenuStyles self)
         {
             GameObject pcStyleGo = new GameObject("Rick Style");
@@ -129,7 +129,7 @@ namespace ZaliantsSurprise
             //PrintDebug(pcStyleGo);
             return ("UI_MENU_STYLE_RICK", pcStyleGo, -1, "", null, cameraCurves, Resources.FindObjectsOfTypeAll<AudioMixer>().First(x => x.name == "Music").FindSnapshot("Silent"));
         }
-        
+
         private string OnLanguageGetHook(string key, string sheet, string orig)
         {
             //Log($"Sheet: {sheet}; Key: {key}");

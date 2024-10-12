@@ -9,8 +9,8 @@ using UnityEngine.Audio;
 using UObject = UnityEngine.Object;
 using USceneManager = UnityEngine.SceneManagement.SceneManager;
 using UnityEngine.Video;
-using LanguageStrings = ZaliantsSurprise.Consts.LanguageStrings;
 using System.Linq;
+using System.Text;
 using SFCore.Utils;
 
 namespace ZaliantsSurprise;
@@ -23,7 +23,7 @@ public class ZaliantsSurprise : Mod
 
     private AssetBundle _abTitleScreenRick = null;
 
-    public override string GetVersion() => SFCore.Utils.Util.GetVersion(Assembly.GetExecutingAssembly());
+    public override string GetVersion() => Util.GetVersion(Assembly.GetExecutingAssembly());
 
     public override List<ValueTuple<string, string>> GetPreloadNames()
     {
@@ -35,9 +35,9 @@ public class ZaliantsSurprise : Mod
 
     public ZaliantsSurprise() : base("Zaliants Surprise")
     {
-        LangStrings = new LanguageStrings();
+        LangStrings = new LanguageStrings(Assembly.GetExecutingAssembly(), "ZaliantsSurprise.Resources.Language.json", Encoding.UTF8);
 
-        MenuStyleHelper.AddMenuStyleHook += AddMenuStyleRick;
+        InitCallbacks();
     }
 
     public override void Initialize()
@@ -45,12 +45,17 @@ public class ZaliantsSurprise : Mod
         Log("Initializing");
         Instance = this;
 
-        ModHooks.LanguageGetHook += OnLanguageGetHook;
-
         var tmpStyle = MenuStyles.Instance.styles.First(x => x.styleObject.name.Contains("Rick Style"));
         MenuStyles.Instance.SetStyle(MenuStyles.Instance.styles.ToList().IndexOf(tmpStyle), false);
 
         Log("Initialized");
+    }
+
+    private void InitCallbacks()
+    {
+        MenuStyleHelper.AddMenuStyleHook += AddMenuStyleRick;
+
+        ModHooks.LanguageGetHook += OnLanguageGetHook;
     }
 
     private (string languageString, GameObject styleGo, int titleIndex, string unlockKey, string[] achievementKeys, MenuStyles.MenuStyle.CameraCurves cameraCurves, AudioMixerSnapshot musicSnapshot) AddMenuStyleRick(MenuStyles self)
